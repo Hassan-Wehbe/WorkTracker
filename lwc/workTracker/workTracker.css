@@ -1,0 +1,24 @@
+.tracker {
+    padding: 1rem;
+}
+
+.tracker__header {
+    margin-bottom: 1rem;
+}
+
+.tracker__filters {
+    max-width: 24rem;
+    margin-bottom: 1rem;
+}
+
+.tracker__table-section {
+    overflow-x: auto;
+}
+
+.tracker__table {
+    width: 100%;
+}
+
+.tracker__legend {
+    color: #3e3e3c;
+}

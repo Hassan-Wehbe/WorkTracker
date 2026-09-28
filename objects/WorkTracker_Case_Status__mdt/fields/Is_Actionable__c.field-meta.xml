@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Is_Actionable__c</fullName>
+    <defaultValue>true</defaultValue>
+    <description>When false, WorkTracker treats this Case status as non-actionable (capacity releasing / dispositioned).</description>
+    <fieldManageability>DeveloperControlled</fieldManageability>
+    <label>Is Actionable</label>
+    <type>Checkbox</type>
+</CustomField>

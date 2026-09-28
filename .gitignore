@@ -1,0 +1,10 @@
+.DS_Store
+.sfdx/
+.sf/
+.localdev/
+node_modules/
+*.log
+.env
+.env.*
+**/credentials*.json
+**/*secret*

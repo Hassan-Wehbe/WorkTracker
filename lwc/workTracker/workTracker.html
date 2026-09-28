@@ -1,0 +1,93 @@
+<template>
+    <main class="tracker">
+        <header class="tracker__header">
+            <h1 class="slds-text-heading_medium">WorkTracker</h1>
+            <p class="slds-text-body_small slds-m-top_x-small">
+                Daily Omni-style case accept/reject activity for the last 15 days (capacity = 1).
+            </p>
+        </header>
+
+        <section class="tracker__filters" aria-label="Agent filter">
+            <lightning-combobox
+                name="agent"
+                label="Agent"
+                value={selectedUserId}
+                placeholder="Select an agent"
+                options={agentOptions}
+                onchange={handleAgentChange}
+            ></lightning-combobox>
+        </section>
+
+        <template if:true={agentsError}>
+            <section class="slds-p-around_small" role="alert">
+                <p class="slds-text-color_error">{agentsError}</p>
+            </section>
+        </template>
+
+        <template if:true={showEmptyAgents}>
+            <section class="slds-p-around_small" aria-live="polite">
+                <p>No Service Cloud agents were found.</p>
+            </section>
+        </template>
+
+        <template if:true={metricsError}>
+            <section class="slds-p-around_small" role="alert">
+                <p class="slds-text-color_error">{metricsError}</p>
+            </section>
+        </template>
+
+        <template if:true={isLoadingMetrics}>
+            <section class="slds-p-around_medium" aria-live="polite">
+                <lightning-spinner alternative-text="Loading WorkTracker metrics" size="medium"></lightning-spinner>
+            </section>
+        </template>
+
+        <template if:true={hasRows}>
+            <section class="tracker__table-section" aria-label="Daily AgentWork metrics">
+                <table class="slds-table slds-table_cell-buffer slds-table_bordered tracker__table">
+                    <caption class="slds-assistive-text">
+                        Daily accepted, rejected, parallel, kept-actionable, and returning long-running work
+                    </caption>
+                    <thead>
+                        <tr>
+                            <th scope="col">Date</th>
+                            <th scope="col">Cases Accepted</th>
+                            <th scope="col">Cases Rejected</th>
+                            <th scope="col">Kept Actionable</th>
+                            <th scope="col">Parallel Work</th>
+                            <th scope="col">Long-Running Kept Actionable</th>
+                            <th scope="col">Long-Running Returning</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <template for:each={rows} for:item="row">
+                            <tr key={row.activityDate}>
+                                <th scope="row">{row.activityDate}</th>
+                                <td>{row.acceptedCount}</td>
+                                <td>{row.rejectedCount}</td>
+                                <td>{row.keptActionableCount}</td>
+                                <td>{row.parallelWorkCount}</td>
+                                <td>{row.longRunningKeptActionableCount}</td>
+                                <td>{row.longRunningReturningCount}</td>
+                            </tr>
+                        </template>
+                    </tbody>
+                </table>
+            </section>
+
+            <footer class="tracker__legend slds-text-body_small slds-m-top_small">
+                <p>
+                    <strong>Kept Actionable</strong> statuses: {keptActionableStatusesLabel}.
+                    <strong> Actionable</strong>: {actionableStatusesLabel}.
+                    <strong> Non-actionable</strong>: {nonActionableStatusesLabel}.
+                    Configure these in Custom Metadata Type
+                    <em> WorkTracker Case Status</em>.
+                    <strong> Long-Running Kept Actionable</strong> = accepted &gt;1h and still in a kept-actionable
+                    status, and not marked returning.
+                    <strong> Long-Running Returning</strong> = accepted &gt;1h for Cases that previously left a
+                    non-actionable status (Case History and/or Is Returning on work history).
+                </p>
+            </footer>
+        </template>
+    </main>
+</template>
